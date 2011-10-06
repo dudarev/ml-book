@@ -14,8 +14,8 @@ Each chapter of this book is a specific practical web application that uses some
 
 ## Inspirations
 
-<ml-class.org> by Professor Andrew Ng.
+[ml-class.org](http://ml-class.org) by Professor Andrew Ng.
 
 "[Programming Collective Intelligence](http://shop.oreilly.com/product/9780596529321.do)" by Toby Segaran.
 
-Mark Pilgrim book and, in particular, his "Dive into Python".
+Mark Pilgrim book and, in particular, his "[Dive into Python](http://www.amazon.com/Dive-Into-Python-Mark-Pilgrim/dp/1590593561)".
