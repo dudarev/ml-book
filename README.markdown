@@ -12,6 +12,10 @@ Each chapter of this book is a specific practical web application that uses some
 
 ### Geobablefish
 
+### Appendix A: Web Applications Design Patterns
+
+#### Login with
+
 ## Inspirations
 
 [ml-class.org](http://ml-class.org) by Professor Andrew Ng.
