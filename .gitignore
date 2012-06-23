@@ -1,2 +1,3 @@
 *.swp
 *.pyc
+src/listskeeper/secrets.py
