@@ -81,15 +81,14 @@ class RootHandler(BaseRequestHandler):
 class ListsHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /lists"""    
-
-    auth = tweepy.OAuthHandler("xB4dOYqyYJ5XqxdzqKGJQ", "bHVkbmrgkJC0v2mj2gxbGHqlwbOrJnZoZNPGgFABE")
-    auth.set_access_token("Q3CUooVG7Zba3gUpZXbkYM", "1341308137")
-    api = tweepy.API(auth)
-
-    lists = api.lists(user='dudarev')
-    print lists
-    self.render('lists.html', {
-    })
+    if self.logged_in:
+        auth = tweepy.OAuthHandler(secrets.TWITTER_CONSUMER_KEY, secrets.TWITTER_CONSUMER_SECRET)
+        auth.set_access_token(self.current_user.oauth_token, self.current_user.oauth_token_secret)
+        api = tweepy.API(auth)
+        lists = api.lists(user=self.current_user.name)
+        self.render('lists.html', {'lists': lists})
+    else:
+      self.redirect('/')
 
 
 class ProfileHandler(BaseRequestHandler):
@@ -125,7 +124,9 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     'twitter'  : {
       'profile_image_url': 'avatar_url',
       'screen_name'      : 'name',
-      'link'             : 'link'
+      'link'             : 'link',
+      'oauth_token'      : 'oauth_token',
+      'oauth_token_secret': 'oauth_token_secret',
     },
     'linkedin' : {
       'picture-url'       : 'avatar_url',
@@ -156,6 +157,11 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
       )
       
     else:
+
+      if provider == 'twitter':
+          data['oauth_token'] = auth_info['oauth_token']
+          data['oauth_token_secret'] = auth_info['oauth_token_secret']
+
       # check whether there's a user currently logged in
       # then, create a new user if nobody's signed in, 
       # otherwise add this auth_id to currently logged in user.
