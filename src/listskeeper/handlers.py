@@ -10,6 +10,8 @@ from jinja2.runtime import TemplateNotFound
 
 from simpleauth import SimpleAuthHandler
 
+import tweepy
+
 
 class BaseRequestHandler(webapp2.RequestHandler):
   def dispatch(self):
@@ -75,6 +77,21 @@ class RootHandler(BaseRequestHandler):
     """Handles default langing page"""
     self.render('home.html')
     
+
+class ListsHandler(BaseRequestHandler):
+  def get(self):
+    """Handles GET /lists"""    
+
+    auth = tweepy.OAuthHandler("xB4dOYqyYJ5XqxdzqKGJQ", "bHVkbmrgkJC0v2mj2gxbGHqlwbOrJnZoZNPGgFABE")
+    auth.set_access_token("Q3CUooVG7Zba3gUpZXbkYM", "1341308137")
+    api = tweepy.API(auth)
+
+    lists = api.lists(user='dudarev')
+    print lists
+    self.render('lists.html', {
+    })
+
+
 class ProfileHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /profile"""    
