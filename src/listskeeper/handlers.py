@@ -10,6 +10,8 @@ from jinja2.runtime import TemplateNotFound
 
 from simpleauth import SimpleAuthHandler
 
+import tweepy
+
 
 class BaseRequestHandler(webapp2.RequestHandler):
   def dispatch(self):
@@ -75,6 +77,20 @@ class RootHandler(BaseRequestHandler):
     """Handles default langing page"""
     self.render('home.html')
     
+
+class ListsHandler(BaseRequestHandler):
+  def get(self):
+    """Handles GET /lists"""    
+    if self.logged_in:
+        auth = tweepy.OAuthHandler(secrets.TWITTER_CONSUMER_KEY, secrets.TWITTER_CONSUMER_SECRET)
+        auth.set_access_token(self.current_user.oauth_token, self.current_user.oauth_token_secret)
+        api = tweepy.API(auth)
+        lists = api.lists(user=self.current_user.name)
+        self.render('lists.html', {'lists': lists})
+    else:
+      self.redirect('/')
+
+
 class ProfileHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /profile"""    
@@ -108,7 +124,9 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     'twitter'  : {
       'profile_image_url': 'avatar_url',
       'screen_name'      : 'name',
-      'link'             : 'link'
+      'link'             : 'link',
+      'oauth_token'      : 'oauth_token',
+      'oauth_token_secret': 'oauth_token_secret',
     },
     'linkedin' : {
       'picture-url'       : 'avatar_url',
@@ -139,6 +157,11 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
       )
       
     else:
+
+      if provider == 'twitter':
+          data['oauth_token'] = auth_info['oauth_token']
+          data['oauth_token_secret'] = auth_info['oauth_token_secret']
+
       # check whether there's a user currently logged in
       # then, create a new user if nobody's signed in, 
       # otherwise add this auth_id to currently logged in user.

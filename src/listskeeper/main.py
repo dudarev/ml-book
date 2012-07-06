@@ -24,6 +24,7 @@ app_config = {
 routes = [
   Route('/', handler='handlers.RootHandler'),  
   Route('/profile', handler='handlers.ProfileHandler', name='profile'),
+  Route('/lists', handler='handlers.ListsHandler', name='lists'),
   
   Route('/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
   Route('/auth/<provider>/callback', handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),

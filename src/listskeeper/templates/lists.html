@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<h1>List of lists</h1>
+
+<ul>
+    {% for l in lists %}
+    <li>{{ l.slug }}</li>
+    {% endfor %}
+</ul>
+
+<p style="margin-top: 2em;">
+<a href="/logout" class="btn">logout</a>
+</p>
+
+{% endblock %}
